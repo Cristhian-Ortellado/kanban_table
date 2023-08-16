@@ -7,6 +7,18 @@ let author = "";
 let tag = "";
 
 const modal = useModalStore();
+
+function createAction() {
+  modal.$patch({
+    title: title,
+    description: description,
+    author: author,
+    tag: tag,
+  });
+
+  modal.closeModal();
+  modal.afterMethod();
+}
 </script>
 <template>
   <div
@@ -50,7 +62,7 @@ const modal = useModalStore();
             <button
               type="button"
               class="inline-flex w-full justify-center rounded-md bg-slate-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-              @click="modal.createAction(title, description, author, tag)"
+              @click="createAction"
             >
               Create
             </button>

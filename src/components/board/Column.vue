@@ -2,25 +2,31 @@
 import { ref } from "vue";
 import Task from "./Task.vue";
 import AddTaskButton from "./AddNewTaskButton.vue";
-
+import { useModalStore } from "@/stores/ModalStore.js";
 //props
 const props = defineProps({
   title: String,
   initialTasks: Array,
 });
 
+const modal = useModalStore();
+
 let tasks = ref(props.initialTasks);
 
+//add a new task to this column
 function addTask() {
-  tasks.value.push({
-    title: "Text is not showing icons",
-    description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse doloremque
-        id architecto tempora perspiciatis dolor blanditiis accusantium quaerat
-        atque aliquam provident eaque sapiente, eius tempore nulla consequuntur
-        quos possimus laborum!`,
-    author: "Cristhian Ortellado",
-    tag: "bug",
+  const newTask = modal.getCreatedTask;
+
+  tasks.value.unshift({
+    title: newTask.title,
+    description: newTask.description,
+    author: newTask.author,
+    tag: newTask.tag,
   });
+}
+
+function showModal() {
+  modal.showModal(addTask);
 }
 </script>
 
@@ -30,7 +36,7 @@ function addTask() {
     <h4 class="text-center font-light text-white text-2xl">{{ title }}</h4>
 
     <!-- Add new Task -->
-    <AddTaskButton @add-task="addTask"></AddTaskButton>
+    <AddTaskButton @show-modal="showModal"></AddTaskButton>
 
     <!-- content -->
     <div class="flex-1 w-full rounded flex flex-col overflow-y-auto">

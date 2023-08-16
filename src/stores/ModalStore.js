@@ -1,33 +1,35 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
 
-export const useModalStore = defineStore("modal", () => {
-  const title = ref("");
-  const description = ref("");
-  const author = ref("");
-  const tag = ref("");
-  let openModal = ref(false);
-
-  const showModal = () => {
-    console.log(openModal.value);
-    openModal.value = true;
-  };
-
-  function createAction(title = "", description = "", author = "", tag = "") {
-    this.title = title;
-    this.description = description;
-    this.author = author;
-    this.tag = tag;
-    closeModal();
-  }
-
-  const closeModal = () => {
-    openModal.value = false;
-  };
-
-  const modalCreateAction = () => {
-    openModal.value = false;
-  };
-
-  return { openModal, showModal, closeModal, createAction };
+export const useModalStore = defineStore("modal", {
+  state: () => ({
+    title: String,
+    description: String,
+    author: String,
+    tag: String,
+    openModal: false,
+    afterCreationMethod: null,
+  }),
+  getters: {
+    getCreatedTask: (state) => {
+      return {
+        title: state.title,
+        description: state.description,
+        author: state.author,
+        tag: state.tag,
+      };
+    },
+  },
+  actions: {
+    showModal(method) {
+      this.afterCreationMethod = method;
+      this.openModal = true;
+    },
+    closeModal() {
+      this.openModal = false;
+    },
+    afterMethod() {
+      console.log(this.afterCreationMethod);
+      this.afterCreationMethod();
+    },
+  },
 });

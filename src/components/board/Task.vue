@@ -12,7 +12,7 @@ defineProps({
 <template>
   <div class="m-2 rounded bg-[#ffff] p-4">
     <!-- Tag -->
-    <Tag>{{ tag }}</Tag>
+    <Tag :type="tag">{{ tag }}</Tag>
 
     <!-- Title -->
     <h2 class="font-semibold my-2">{{ title }}</h2>
