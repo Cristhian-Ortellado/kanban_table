@@ -3,6 +3,8 @@ import { ref } from "vue";
 import Task from "./Task.vue";
 import AddTaskButton from "./AddNewTaskButton.vue";
 import { useModalStore } from "@/stores/ModalStore.js";
+import { VueDraggableNext as draggable } from 'vue-draggable-next';
+
 //props
 const props = defineProps({
   title: String,
@@ -39,14 +41,20 @@ function showModal() {
     <AddTaskButton @show-modal="showModal"></AddTaskButton>
 
     <!-- content -->
-    <div class="flex-1 w-full rounded flex flex-col overflow-y-auto">
-      <Task
-        v-for="task in tasks"
-        :title="task.title"
-        :description="task.description"
-        :author="task.author"
-        :tag="task.tag"
-      ></Task>
-    </div>
+
+      <div class="flex-1 w-full rounded flex flex-col overflow-y-auto">
+        <draggable class="dragArea"
+        :list="tasks">
+          <Task
+              v-for="task in tasks"
+              :title="task.title"
+              :description="task.description"
+              :author="task.author"
+              :tag="task.tag"
+              :key="task.id"
+          ></Task>
+        </draggable>
+      </div>
+
   </div>
 </template>
